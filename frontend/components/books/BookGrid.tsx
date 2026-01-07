@@ -2,7 +2,7 @@
 
 import { Book } from '@/types';
 import BookCard from './BookCard';
-import { EmptyState } from '../ui';
+import { EmptyState } from '../common';
 
 interface BookGridProps {
   books: Book[];
@@ -15,8 +15,14 @@ export default function BookGrid({
   emptyMessage = 'No books found', 
   showAuthor = true 
 }: BookGridProps) {
-  if (books.length === 0) {
-    return <EmptyState message={emptyMessage} />;
+  if (!books || books.length === 0) {
+    return (
+      <EmptyState 
+        icon="📚" 
+        title={emptyMessage}
+        description="Check back later for new content"
+      />
+    );
   }
 
   return (

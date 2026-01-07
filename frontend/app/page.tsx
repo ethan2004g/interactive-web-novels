@@ -23,7 +23,7 @@ export default function Home() {
           page: 1,
           size: 4,
         });
-        setFeaturedBooks(featuredResponse.items);
+        setFeaturedBooks(featuredResponse?.items || []);
 
         // Fetch trending books (most views, all statuses)
         const trendingResponse = await bookService.getBooks({
@@ -32,7 +32,7 @@ export default function Home() {
           page: 1,
           size: 8,
         });
-        setTrendingBooks(trendingResponse.items);
+        setTrendingBooks(trendingResponse?.items || []);
       } catch (error) {
         console.error('Error fetching books:', error);
       } finally {

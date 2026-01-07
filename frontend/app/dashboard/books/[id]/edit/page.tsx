@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ProtectedRoute, RoleGuard } from '@/components/auth';
 import { DashboardLayout } from '@/components/layout';
 import { Button, LoadingSpinner } from '@/components/common';
 import { Card, Alert } from '@/components/ui';
 import { bookService } from '@/services';
-import { BookCreate } from '@/types';
-import { useRouter } from 'next/navigation';
+import { Book, BookUpdate } from '@/types';
+import { useRouter, useParams } from 'next/navigation';
 
 const GENRES = [
   'Fantasy',
@@ -24,11 +24,16 @@ const GENRES = [
   'Other',
 ];
 
-function CreateBookContent() {
+function EditBookContent() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const bookId = params?.id as string;
+  
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState<BookCreate>({
+  const [book, setBook] = useState<Book | null>(null);
+  const [formData, setFormData] = useState<BookUpdate>({
     title: '',
     description: '',
     genre: '',
@@ -38,29 +43,54 @@ function CreateBookContent() {
   });
   const [tagInput, setTagInput] = useState('');
 
+  useEffect(() => {
+    loadBook();
+  }, [bookId]);
+
+  const loadBook = async () => {
+    try {
+      setLoading(true);
+      const bookData = await bookService.getBookById(bookId);
+      setBook(bookData);
+      setFormData({
+        title: bookData.title,
+        description: bookData.description,
+        genre: bookData.genre || '',
+        tags: bookData.tags || [],
+        status: bookData.status,
+        cover_image_url: bookData.cover_image_url || '',
+      });
+    } catch (err: any) {
+      console.error('Error loading book:', err);
+      setError('Failed to load book details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     // Validation
-    if (!formData.title.trim()) {
+    if (!formData.title?.trim()) {
       setError('Title is required');
       return;
     }
-    if (!formData.description.trim()) {
+    if (!formData.description?.trim()) {
       setError('Description is required');
       return;
     }
 
     try {
-      setLoading(true);
-      const book = await bookService.createBook(formData);
-      router.push(`/dashboard/books/${book.id}/edit`);
+      setSaving(true);
+      await bookService.updateBook(bookId, formData);
+      router.push('/dashboard/books');
     } catch (err: any) {
-      console.error('Error creating book:', err);
-      setError(err.response?.data?.detail || 'Failed to create book. Please try again.');
+      console.error('Error updating book:', err);
+      setError(err.response?.data?.detail || 'Failed to update book. Please try again.');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -82,12 +112,32 @@ function CreateBookContent() {
     });
   };
 
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <LoadingSpinner size="lg" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!book) {
+    return (
+      <DashboardLayout>
+        <Alert variant="error" title="Error">
+          Book not found
+        </Alert>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <div className="max-w-3xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Create New Book</h1>
-          <p className="text-gray-600 mt-1">Start your writing journey with a new book</p>
+          <h1 className="text-3xl font-bold text-gray-900">Edit Book</h1>
+          <p className="text-gray-600 mt-1">Update your book details</p>
         </div>
 
         {error && (
@@ -230,44 +280,80 @@ function CreateBookContent() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="https://example.com/image.jpg"
               />
-              <p className="mt-1 text-sm text-gray-500">
-                Optional: Provide a URL to your book cover image
-              </p>
+              {formData.cover_image_url && (
+                <div className="mt-3">
+                  <img
+                    src={formData.cover_image_url}
+                    alt="Cover preview"
+                    className="w-32 h-48 object-cover rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Form Actions */}
             <div className="flex gap-3 pt-4 border-t">
-              <Button type="submit" variant="primary" disabled={loading}>
-                {loading ? (
+              <Button type="submit" variant="primary" disabled={saving}>
+                {saving ? (
                   <>
                     <LoadingSpinner size="sm" className="mr-2" />
-                    Creating...
+                    Saving...
                   </>
                 ) : (
-                  'Create Book'
+                  'Save Changes'
                 )}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.back()}
-                disabled={loading}
+                disabled={saving}
               >
                 Cancel
               </Button>
             </div>
           </form>
         </Card>
+
+        {/* Book Stats */}
+        <Card className="mt-6">
+          <div className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Book Statistics</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Total Views</p>
+                <p className="text-2xl font-bold text-gray-900">{book.total_views || 0}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Likes</p>
+                <p className="text-2xl font-bold text-gray-900">{book.total_likes || 0}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Average Rating</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {book.average_rating?.toFixed(1) || '0.0'}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Ratings</p>
+                <p className="text-2xl font-bold text-gray-900">{book.rating_count || 0}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
       </div>
     </DashboardLayout>
   );
 }
 
-export default function CreateBookPage() {
+export default function EditBookPage() {
   return (
     <ProtectedRoute>
       <RoleGuard allowedRoles={['author', 'admin']}>
-        <CreateBookContent />
+        <EditBookContent />
       </RoleGuard>
     </ProtectedRoute>
   );

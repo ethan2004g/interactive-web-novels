@@ -38,10 +38,12 @@ export default function BookDetailPage() {
         bookService.getBookById(bookId),
         chapterService.getChaptersByBook(bookId),
       ]);
-      setBook(bookData);
-      setChapters(chaptersData);
+      setBook(bookData || null);
+      setChapters(chaptersData || []);
     } catch (error) {
       console.error('Error fetching book data:', error);
+      setBook(null);
+      setChapters([]);
     } finally {
       setLoading(false);
     }
@@ -50,9 +52,10 @@ export default function BookDetailPage() {
   const checkBookmark = async () => {
     try {
       const bookmarks = await readerService.getBookmarks();
-      setIsBookmarked(bookmarks.some((b) => b.book_id === bookId));
+      setIsBookmarked((bookmarks || []).some((b) => b.book_id === bookId));
     } catch (error) {
       console.error('Error checking bookmark:', error);
+      setIsBookmarked(false);
     }
   };
 

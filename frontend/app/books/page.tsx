@@ -79,10 +79,12 @@ export default function BooksPage() {
       if (selectedStatus) filters.status = selectedStatus as any;
 
       const response = await bookService.getBooks(filters);
-      setBooks(response.items);
-      setTotalPages(response.pages);
+      setBooks(response?.items || []);
+      setTotalPages(response?.pages || 1);
     } catch (error) {
       console.error('Error fetching books:', error);
+      setBooks([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
@@ -226,7 +228,7 @@ export default function BooksPage() {
             {/* Results Count */}
             <div className="mb-6">
               <p className="text-gray-600">
-                Found {books.length} book{books.length !== 1 ? 's' : ''}
+                Found {books?.length || 0} book{books?.length !== 1 ? 's' : ''}
               </p>
             </div>
 
