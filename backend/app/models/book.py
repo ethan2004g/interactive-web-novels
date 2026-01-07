@@ -31,7 +31,7 @@ class Book(Base):
     
     # Relationships
     author = relationship("User", back_populates="books")
-    # chapters = relationship("Chapter", back_populates="book", cascade="all, delete-orphan")
+    chapters = relationship("Chapter", back_populates="book", cascade="all, delete-orphan")
     # reading_progress = relationship("ReadingProgress", back_populates="book")
     # bookmarks = relationship("Bookmark", back_populates="book")
     # ratings = relationship("Rating", back_populates="book")

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.deps import get_db, get_current_user, get_current_author
 from app.models.user import User
 from app.models.book import BookStatus
-from app.schemas.book import Book, BookCreate, BookUpdate, BookListResponse
+from app.schemas.book import Book, BookCreate, BookUpdate, BookListResponse, BookStatistics
 from app.services import book_service
 import math
 
@@ -208,4 +208,33 @@ def like_book(
     
     updated_book = book_service.increment_likes(db, book)
     return updated_book
+
+
+@router.get("/{book_id}/statistics", response_model=BookStatistics)
+def get_book_statistics(
+    book_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Get comprehensive statistics for a book (public endpoint)
+    
+    Returns:
+    - Total views
+    - Total likes
+    - Total chapters
+    - Total comments across all chapters
+    - Total bookmarks
+    - Average rating
+    - Total ratings
+    - Rating distribution (1-5 stars)
+    """
+    stats = book_service.get_book_statistics(db, book_id)
+    
+    if not stats:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found"
+        )
+    
+    return stats
 

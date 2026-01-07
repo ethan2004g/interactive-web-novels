@@ -171,32 +171,32 @@ Authors can not only write chapters but also **code** them with:
   - [x] Implement token refresh endpoint
   - [x] Create user profile endpoints (GET, PUT)
 
-- [ ] **1.3 Books Management API**
-  - [ ] Create Book model and database table
-  - [ ] Implement create book endpoint (authors only)
-  - [ ] Implement get all books endpoint (with pagination, filters)
-  - [ ] Implement get single book endpoint
-  - [ ] Implement update book endpoint (author only)
-  - [ ] Implement delete book endpoint (author only)
-  - [ ] Implement book search functionality
-  - [ ] Add genre and tag filtering
+- [x] **1.3 Books Management API**
+  - [x] Create Book model and database table
+  - [x] Implement create book endpoint (authors only)
+  - [x] Implement get all books endpoint (with pagination, filters)
+  - [x] Implement get single book endpoint
+  - [x] Implement update book endpoint (author only)
+  - [x] Implement delete book endpoint (author only)
+  - [x] Implement book search functionality
+  - [x] Add genre and tag filtering
 
-- [ ] **1.4 Chapters Management API**
-  - [ ] Create Chapter model and database table
-  - [ ] Implement create chapter endpoint
-  - [ ] Implement get chapters by book endpoint
-  - [ ] Implement get single chapter endpoint
-  - [ ] Implement update chapter endpoint
-  - [ ] Implement delete chapter endpoint
-  - [ ] Implement chapter ordering/reordering
-  - [ ] Store both simple text and interactive JSON content
+- [x] **1.4 Chapters Management API**
+  - [x] Create Chapter model and database table
+  - [x] Implement create chapter endpoint
+  - [x] Implement get chapters by book endpoint
+  - [x] Implement get single chapter endpoint
+  - [x] Implement update chapter endpoint
+  - [x] Implement delete chapter endpoint
+  - [x] Implement chapter ordering/reordering
+  - [x] Store both simple text and interactive JSON content
 
-- [ ] **1.5 Reader Features API**
-  - [ ] Create ReadingProgress model and endpoints
-  - [ ] Create Bookmark model and endpoints
-  - [ ] Create Rating model and endpoints
-  - [ ] Create Comment model and endpoints (with nested replies)
-  - [ ] Implement book statistics (views, likes, ratings)
+- [x] **1.5 Reader Features API**
+  - [x] Create ReadingProgress model and endpoints
+  - [x] Create Bookmark model and endpoints
+  - [x] Create Rating model and endpoints
+  - [x] Create Comment model and endpoints (with nested replies)
+  - [x] Implement book statistics (views, likes, ratings)
 
 - [ ] **1.6 File Upload & Storage**
   - [ ] Implement image upload endpoint (cover images, chapter images)
@@ -373,22 +373,21 @@ Authors can not only write chapters but also **code** them with:
 ## 📝 Current Status
 
 **Current Phase:** Phase 1 - Backend Foundation  
-**Progress:** Phase 1.1 & 1.2 Complete (100%)
+**Progress:** Phase 1.1, 1.2, 1.3, 1.4 & 1.5 Complete (100%)
 
 ### Recently Completed
-- ✅ Phase 1.2: User Authentication System
-  - ✅ Created User model with roles (reader/author/admin)
-  - ✅ Implemented JWT-based authentication
-  - ✅ User registration with validation
-  - ✅ Login with username/email support
-  - ✅ Token refresh mechanism
-  - ✅ Password hashing with bcrypt
-  - ✅ User profile management (GET, PUT)
-  - ✅ Role-based access control dependencies
-  - ✅ All authentication tests passing
+- ✅ Phase 1.5: Reader Features API
+  - ✅ Created ReadingProgress, Bookmark, Rating, and Comment models
+  - ✅ Full CRUD operations for all reader features
+  - ✅ Nested comment replies with cascade delete
+  - ✅ Rating statistics with distribution
+  - ✅ Comprehensive book statistics endpoint
+  - ✅ Database migrations with proper constraints
+  - ✅ All 29 test scenarios passing
+  - ✅ Fixed Python 3.9 compatibility issues
 
 ### Next Up
-- Phase 1.3: Books Management API
+- Phase 1.6: File Upload & Storage
 
 ---
 

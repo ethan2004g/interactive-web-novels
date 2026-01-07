@@ -170,9 +170,31 @@ Once the server is running, visit:
 - Ensure virtual environment is activated
 - Reinstall dependencies: `pip install -r requirements.txt`
 
+## Completed Features
+
+- [x] Phase 1.1: Project Setup
+- [x] Phase 1.2: User Authentication System
+- [x] Phase 1.3: Books Management API
+- [x] Phase 1.4: Chapters Management API
+
+## Testing
+
+Run the test scripts to verify functionality:
+
+```bash
+# Test authentication
+python test_auth.py
+
+# Test books API
+python test_books.py
+
+# Test chapters API
+python test_chapters.py
+```
+
 ## Next Steps
 
-- [ ] Phase 1.2: User Authentication System
-- [ ] Phase 1.3: Books Management API
-- [ ] Phase 1.4: Chapters Management API
+- [ ] Phase 1.5: Reader Features API (Reading Progress, Bookmarks, Ratings, Comments)
+- [ ] Phase 1.6: File Upload & Storage
+- [ ] Phase 1.7: Chapter Templates API
 

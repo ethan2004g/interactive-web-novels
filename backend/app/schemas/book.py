@@ -72,3 +72,16 @@ class BookListResponse(BaseModel):
     page_size: int
     total_pages: int
 
+
+# Schema for comprehensive book statistics
+class BookStatistics(BaseModel):
+    """Schema for comprehensive book statistics"""
+    book_id: int
+    total_views: int
+    total_likes: int
+    total_chapters: int
+    total_comments: int
+    total_bookmarks: int
+    average_rating: float
+    total_ratings: int
+    rating_distribution: dict

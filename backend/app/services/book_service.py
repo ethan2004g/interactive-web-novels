@@ -1,11 +1,15 @@
 """
 Book service layer - Business logic for book operations
 """
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Dict
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_, func
 from app.models.book import Book, BookStatus
 from app.models.user import User
+from app.models.chapter import Chapter
+from app.models.comment import Comment
+from app.models.bookmark import Bookmark
+from app.models.rating import Rating
 from app.schemas.book import BookCreate, BookUpdate
 
 
@@ -119,4 +123,51 @@ def get_user_books(db: Session, user_id: int) -> List[Book]:
 def is_book_author(book: Book, user: User) -> bool:
     """Check if user is the author of the book"""
     return book.author_id == user.id
+
+
+def get_book_statistics(db: Session, book_id: int) -> Dict:
+    """Get comprehensive statistics for a book"""
+    # Get the book
+    book = get_book_by_id(db, book_id)
+    if not book:
+        return None
+    
+    # Get chapter count
+    chapter_count = db.query(func.count(Chapter.id)).filter(Chapter.book_id == book_id).scalar()
+    
+    # Get total comments count across all chapters
+    comment_count = db.query(func.count(Comment.id)).join(
+        Chapter, Comment.chapter_id == Chapter.id
+    ).filter(Chapter.book_id == book_id).scalar()
+    
+    # Get bookmark count
+    bookmark_count = db.query(func.count(Bookmark.id)).filter(Bookmark.book_id == book_id).scalar()
+    
+    # Get rating statistics
+    rating_stats = db.query(
+        func.avg(Rating.rating).label('average'),
+        func.count(Rating.id).label('total')
+    ).filter(Rating.book_id == book_id).first()
+    
+    # Get rating distribution
+    distribution = db.query(
+        Rating.rating,
+        func.count(Rating.id)
+    ).filter(Rating.book_id == book_id).group_by(Rating.rating).all()
+    
+    rating_dist = {i: 0 for i in range(1, 6)}  # Initialize 1-5 stars with 0
+    for rating_value, count in distribution:
+        rating_dist[rating_value] = count
+    
+    return {
+        "book_id": book_id,
+        "total_views": book.total_views,
+        "total_likes": book.total_likes,
+        "total_chapters": chapter_count or 0,
+        "total_comments": comment_count or 0,
+        "total_bookmarks": bookmark_count or 0,
+        "average_rating": float(rating_stats.average) if rating_stats.average else 0.0,
+        "total_ratings": rating_stats.total if rating_stats.total else 0,
+        "rating_distribution": rating_dist
+    }
 
