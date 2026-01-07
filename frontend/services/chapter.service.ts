@@ -11,14 +11,17 @@ export const chapterService = {
     const params = new URLSearchParams();
     
     if (filters?.is_published !== undefined) {
-      params.append('is_published', filters.is_published.toString());
+      params.append('published_only', filters.is_published.toString());
     }
     if (filters?.content_type) {
       params.append('content_type', filters.content_type);
     }
 
-    const response = await api.get<Chapter[]>(`/books/${bookId}/chapters?${params.toString()}`);
-    return response.data;
+    const response = await api.get<any>(`/books/${bookId}/chapters?${params.toString()}`);
+    
+    // Backend returns: {chapters: [...], total: ...}
+    // Frontend expects: just the array [...]
+    return response.data.chapters || [];
   },
 
   /**
