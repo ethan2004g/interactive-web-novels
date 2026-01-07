@@ -28,6 +28,7 @@ class User(Base):
     
     # Relationships
     books = relationship("Book", back_populates="author")
+    chapter_templates = relationship("ChapterTemplate", back_populates="creator")
     # reading_progress = relationship("ReadingProgress", back_populates="user")
     # comments = relationship("Comment", back_populates="user")
     # bookmarks = relationship("Bookmark", back_populates="user")

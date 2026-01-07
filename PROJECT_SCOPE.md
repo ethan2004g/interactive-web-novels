@@ -204,11 +204,11 @@ Authors can not only write chapters but also **code** them with:
   - [x] Add file validation (type, size)
   - [x] Generate thumbnails for images
 
-- [ ] **1.7 Chapter Templates API**
-  - [ ] Create ChapterTemplate model
-  - [ ] Implement CRUD endpoints for templates
-  - [ ] Create default template library
-  - [ ] Implement template sharing (public/private)
+- [x] **1.7 Chapter Templates API**
+  - [x] Create ChapterTemplate model
+  - [x] Implement CRUD endpoints for templates
+  - [x] Create default template library
+  - [x] Implement template sharing (public/private)
 
 ### 🎨 Phase 2: Frontend Foundation (Next.js)
 - [ ] **2.1 Project Setup**
@@ -373,21 +373,22 @@ Authors can not only write chapters but also **code** them with:
 ## 📝 Current Status
 
 **Current Phase:** Phase 1 - Backend Foundation  
-**Progress:** Phase 1.1, 1.2, 1.3, 1.4, 1.5 & 1.6 Complete (85%)
+**Progress:** Phase 1 COMPLETE! All 7 sub-phases finished (100%)
 
 ### Recently Completed
-- ✅ Phase 1.6: File Upload & Storage
-  - ✅ Created FileStorage utility class with validation
-  - ✅ Cover image and chapter image upload endpoints
-  - ✅ Automatic thumbnail generation for cover images
-  - ✅ File validation (type, size limits)
-  - ✅ Static file serving for uploaded images
-  - ✅ Added thumbnail_url to Book model
+- ✅ Phase 1.7: Chapter Templates API
+  - ✅ Created ChapterTemplate model and database table
+  - ✅ CRUD endpoints for templates with authorization
+  - ✅ Default template library (10 pre-built templates)
+  - ✅ Public/private template sharing system
+  - ✅ Template search and filtering
+  - ✅ Popular templates by usage count
+  - ✅ Database migration and seeding
   - ✅ Comprehensive test suite created
 
 ### Next Up
-- Phase 1.7: Chapter Templates API
-- OR Phase 2: Frontend Foundation (Next.js)
+- 🎨 Phase 2: Frontend Foundation (Next.js)
+  - Starting with Phase 2.1: Project Setup
 
 ---
 

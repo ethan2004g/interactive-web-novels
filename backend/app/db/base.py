@@ -8,6 +8,7 @@ from app.db.base_class import Base
 from app.models.user import User
 from app.models.book import Book
 from app.models.chapter import Chapter
+from app.models.chapter_template import ChapterTemplate
 from app.models.reading_progress import ReadingProgress
 from app.models.bookmark import Bookmark
 from app.models.rating import Rating
