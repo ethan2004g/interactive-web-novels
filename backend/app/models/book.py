@@ -23,6 +23,7 @@ class Book(Base):
     title = Column(String(200), nullable=False, index=True)
     description = Column(Text, nullable=True)
     cover_image_url = Column(String(500), nullable=True)
+    thumbnail_url = Column(String(500), nullable=True)
     genre = Column(String(100), nullable=True, index=True)
     tags = Column(ARRAY(String), nullable=True)  # Array of tags
     status = Column(SQLEnum(BookStatus), default=BookStatus.DRAFT, nullable=False, index=True)

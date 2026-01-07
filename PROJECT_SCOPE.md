@@ -198,11 +198,11 @@ Authors can not only write chapters but also **code** them with:
   - [x] Create Comment model and endpoints (with nested replies)
   - [x] Implement book statistics (views, likes, ratings)
 
-- [ ] **1.6 File Upload & Storage**
-  - [ ] Implement image upload endpoint (cover images, chapter images)
-  - [ ] Set up local file storage
-  - [ ] Add file validation (type, size)
-  - [ ] Generate thumbnails for images
+- [x] **1.6 File Upload & Storage**
+  - [x] Implement image upload endpoint (cover images, chapter images)
+  - [x] Set up local file storage
+  - [x] Add file validation (type, size)
+  - [x] Generate thumbnails for images
 
 - [ ] **1.7 Chapter Templates API**
   - [ ] Create ChapterTemplate model
@@ -373,21 +373,21 @@ Authors can not only write chapters but also **code** them with:
 ## 📝 Current Status
 
 **Current Phase:** Phase 1 - Backend Foundation  
-**Progress:** Phase 1.1, 1.2, 1.3, 1.4 & 1.5 Complete (100%)
+**Progress:** Phase 1.1, 1.2, 1.3, 1.4, 1.5 & 1.6 Complete (85%)
 
 ### Recently Completed
-- ✅ Phase 1.5: Reader Features API
-  - ✅ Created ReadingProgress, Bookmark, Rating, and Comment models
-  - ✅ Full CRUD operations for all reader features
-  - ✅ Nested comment replies with cascade delete
-  - ✅ Rating statistics with distribution
-  - ✅ Comprehensive book statistics endpoint
-  - ✅ Database migrations with proper constraints
-  - ✅ All 29 test scenarios passing
-  - ✅ Fixed Python 3.9 compatibility issues
+- ✅ Phase 1.6: File Upload & Storage
+  - ✅ Created FileStorage utility class with validation
+  - ✅ Cover image and chapter image upload endpoints
+  - ✅ Automatic thumbnail generation for cover images
+  - ✅ File validation (type, size limits)
+  - ✅ Static file serving for uploaded images
+  - ✅ Added thumbnail_url to Book model
+  - ✅ Comprehensive test suite created
 
 ### Next Up
-- Phase 1.6: File Upload & Storage
+- Phase 1.7: Chapter Templates API
+- OR Phase 2: Frontend Foundation (Next.js)
 
 ---
 

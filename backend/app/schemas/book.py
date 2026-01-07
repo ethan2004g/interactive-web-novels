@@ -13,6 +13,7 @@ class BookBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
     description: Optional[str] = Field(None, max_length=5000)
     cover_image_url: Optional[str] = Field(None, max_length=500)
+    thumbnail_url: Optional[str] = Field(None, max_length=500)
     genre: Optional[str] = Field(None, max_length=100)
     tags: Optional[List[str]] = Field(default_factory=list)
     status: BookStatus = BookStatus.DRAFT
@@ -30,6 +31,7 @@ class BookUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=200)
     description: Optional[str] = Field(None, max_length=5000)
     cover_image_url: Optional[str] = Field(None, max_length=500)
+    thumbnail_url: Optional[str] = Field(None, max_length=500)
     genre: Optional[str] = Field(None, max_length=100)
     tags: Optional[List[str]] = None
     status: Optional[BookStatus] = None

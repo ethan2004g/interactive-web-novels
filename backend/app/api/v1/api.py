@@ -2,7 +2,7 @@
 API v1 router aggregation
 """
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth, users, books, chapters
+from app.api.v1.endpoints import auth, users, books, chapters, files
 from app.api.v1.endpoints import reading_progress, bookmarks, ratings, comments
 
 api_router = APIRouter()
@@ -16,6 +16,7 @@ api_router.include_router(reading_progress.router, prefix="/reading-progress", t
 api_router.include_router(bookmarks.router, prefix="/bookmarks", tags=["bookmarks"])
 api_router.include_router(ratings.router, prefix="/ratings", tags=["ratings"])
 api_router.include_router(comments.router, prefix="/comments", tags=["comments"])
+api_router.include_router(files.router, prefix="/files", tags=["files"])
 
 @api_router.get("/")
 async def api_root():
