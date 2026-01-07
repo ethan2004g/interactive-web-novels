@@ -20,6 +20,7 @@ export interface Book {
     profile_picture_url?: string;
   };
   average_rating?: number;
+  rating_count?: number;
   total_ratings?: number;
 }
 

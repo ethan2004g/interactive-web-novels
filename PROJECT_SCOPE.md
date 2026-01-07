@@ -235,15 +235,15 @@ Authors can not only write chapters but also **code** them with:
   - [x] Implement responsive design
   - [x] Add loading states and error boundaries
 
-- [ ] **2.4 Book Discovery & Reading**
-  - [ ] Create home page (featured/trending books)
-  - [ ] Create book listing page (with filters, search, pagination)
-  - [ ] Create book detail page
-  - [ ] Create chapter reading page (simple text view)
-  - [ ] Implement reading progress tracking
-  - [ ] Add bookmark functionality
-  - [ ] Add rating and review UI
-  - [ ] Create comment section
+- [x] **2.4 Book Discovery & Reading**
+  - [x] Create home page (featured/trending books)
+  - [x] Create book listing page (with filters, search, pagination)
+  - [x] Create book detail page
+  - [x] Create chapter reading page (simple text view)
+  - [x] Implement reading progress tracking
+  - [x] Add bookmark functionality
+  - [x] Add rating and review UI
+  - [x] Create comment section
 
 - [ ] **2.5 Author Dashboard**
   - [ ] Create author dashboard page
@@ -373,9 +373,22 @@ Authors can not only write chapters but also **code** them with:
 ## 📝 Current Status
 
 **Current Phase:** Phase 2 - Frontend Foundation  
-**Progress:** Phase 2.3 COMPLETE! (60% of Phase 2)
+**Progress:** Phase 2.4 COMPLETE! (80% of Phase 2)
 
 ### Recently Completed
+- ✅ Phase 2.4: Book Discovery & Reading
+  - ✅ Enhanced home page with featured and trending books
+  - ✅ Created comprehensive book listing page with search, filters, and pagination
+  - ✅ Built book detail page with statistics, bookmarks, and rating system
+  - ✅ Implemented chapter reading page with font controls and navigation
+  - ✅ Added reading progress tracking
+  - ✅ Implemented bookmark functionality
+  - ✅ Created interactive rating system (1-5 stars)
+  - ✅ Built full comment section with nested replies
+  - ✅ Created reusable BookCard and BookGrid components
+  - ✅ Enhanced reader service with convenience methods
+
+### Previously Completed
 - ✅ Phase 2.3: Core Layout & Navigation
   - ✅ Created DashboardLayout with integrated sidebar
   - ✅ Created MainLayout for content pages
@@ -388,7 +401,6 @@ Authors can not only write chapters but also **code** them with:
   - ✅ Created dashboard sub-pages (My Books, Library, Bookmarks, Settings)
   - ✅ Implemented full mobile responsiveness
 
-### Previously Completed
 - ✅ Phase 2.2: Authentication UI
   - ✅ Created AuthContext provider with global state
   - ✅ Built login page with validation
@@ -414,11 +426,12 @@ Authors can not only write chapters but also **code** them with:
   - ✅ Comprehensive documentation
 
 ### Next Up
-- 📚 Phase 2.4: Book Discovery & Reading
-  - Book listing with pagination
-  - Search and filter functionality
-  - Book detail page
-  - Chapter reading view
+- 📝 Phase 2.5: Author Dashboard
+  - Author dashboard homepage
+  - "My Books" management page
+  - Book creation and editing forms
+  - Chapter management interface
+  - Book statistics display
 
 ---
 
@@ -456,6 +469,14 @@ Authors can not only write chapters but also **code** them with:
 ## 🔄 Change Log
 
 **January 7, 2026**
+- ✅ Completed Phase 2.4: Book Discovery & Reading
+  - Enhanced home page with featured/trending books
+  - Comprehensive book listing with search, filters, pagination
+  - Book detail page with bookmarks and ratings
+  - Chapter reading page with progress tracking
+  - Full comment section with nested replies
+  - BookCard and BookGrid components
+  - Enhanced reader service
 - ✅ Completed Phase 2.3: Core Layout & Navigation
   - DashboardLayout and MainLayout components
   - Responsive Sidebar with role-based navigation

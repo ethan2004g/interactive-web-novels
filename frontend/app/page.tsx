@@ -1,6 +1,48 @@
+'use client';
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { bookService } from "@/services";
+import { Book } from "@/types";
+import { BookGrid } from "@/components/books";
+import { LoadingSpinner } from "@/components/common";
 
 export default function Home() {
+  const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
+  const [trendingBooks, setTrendingBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        // Fetch featured books (highest rated, completed)
+        const featuredResponse = await bookService.getBooks({
+          status: 'completed',
+          sort_by: 'rating',
+          order: 'desc',
+          page: 1,
+          size: 4,
+        });
+        setFeaturedBooks(featuredResponse.items);
+
+        // Fetch trending books (most views, all statuses)
+        const trendingResponse = await bookService.getBooks({
+          sort_by: 'views',
+          order: 'desc',
+          page: 1,
+          size: 8,
+        });
+        setTrendingBooks(trendingResponse.items);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
+
   return (
     <div className="bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
@@ -29,6 +71,48 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Featured Books Section */}
+      {loading ? (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex justify-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        </section>
+      ) : (
+        <>
+          {featuredBooks.length > 0 && (
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">Featured Books</h2>
+                <Link
+                  href="/books?filter=featured"
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  View All →
+                </Link>
+              </div>
+              <BookGrid books={featuredBooks} />
+            </section>
+          )}
+
+          {/* Trending Books Section */}
+          {trendingBooks.length > 0 && (
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">Trending Now</h2>
+                <Link
+                  href="/books?filter=trending"
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  View All →
+                </Link>
+              </div>
+              <BookGrid books={trendingBooks} />
+            </section>
+          )}
+        </>
+      )}
 
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

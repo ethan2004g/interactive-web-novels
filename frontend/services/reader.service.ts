@@ -15,9 +15,13 @@ import {
 
 export const readerService = {
   // Bookmarks
-  async getMyBookmarks(): Promise<Bookmark[]> {
+  async getBookmarks(): Promise<Bookmark[]> {
     const response = await api.get<Bookmark[]>('/bookmarks');
     return response.data;
+  },
+
+  async getMyBookmarks(): Promise<Bookmark[]> {
+    return this.getBookmarks();
   },
 
   async addBookmark(bookId: string): Promise<Bookmark> {
@@ -25,7 +29,16 @@ export const readerService = {
     return response.data;
   },
 
-  async removeBookmark(bookmarkId: string): Promise<void> {
+  async removeBookmark(bookId: string): Promise<void> {
+    // First, get all bookmarks to find the one for this book
+    const bookmarks = await this.getBookmarks();
+    const bookmark = bookmarks.find((b) => b.book_id === bookId);
+    if (bookmark) {
+      await api.delete(`/bookmarks/${bookmark.id}`);
+    }
+  },
+
+  async deleteBookmark(bookmarkId: string): Promise<void> {
     await api.delete(`/bookmarks/${bookmarkId}`);
   },
 
@@ -44,7 +57,7 @@ export const readerService = {
     return response.data;
   },
 
-  async getMyRating(bookId: string): Promise<Rating | null> {
+  async getUserRating(bookId: string): Promise<Rating | null> {
     try {
       const response = await api.get<Rating>(`/books/${bookId}/ratings/me`);
       return response.data;
@@ -53,7 +66,16 @@ export const readerService = {
     }
   },
 
-  async rateBook(bookId: string, data: RatingCreate): Promise<Rating> {
+  async getMyRating(bookId: string): Promise<Rating | null> {
+    return this.getUserRating(bookId);
+  },
+
+  async rateBook(bookId: string, rating: number): Promise<Rating> {
+    const response = await api.post<Rating>(`/books/${bookId}/ratings`, { rating });
+    return response.data;
+  },
+
+  async createRating(bookId: string, data: RatingCreate): Promise<Rating> {
     const response = await api.post<Rating>(`/books/${bookId}/ratings`, data);
     return response.data;
   },
@@ -68,8 +90,20 @@ export const readerService = {
   },
 
   // Comments
+  async getComments(chapterId: string): Promise<Comment[]> {
+    // Note: The backend API expects /chapters/{chapterId}/comments
+    const response = await api.get<Comment[]>(`/chapters/${chapterId}/comments`);
+    return response.data;
+  },
+
   async getChapterComments(bookId: string, chapterId: string): Promise<Comment[]> {
     const response = await api.get<Comment[]>(`/books/${bookId}/chapters/${chapterId}/comments`);
+    return response.data;
+  },
+
+  async addComment(chapterId: string, content: string, parentCommentId?: string): Promise<Comment> {
+    const data: CommentCreate = { content, parent_comment_id: parentCommentId };
+    const response = await api.post<Comment>(`/chapters/${chapterId}/comments`, data);
     return response.data;
   },
 
@@ -94,7 +128,11 @@ export const readerService = {
     return response.data;
   },
 
-  async deleteComment(bookId: string, chapterId: string, commentId: string): Promise<void> {
+  async deleteComment(commentId: string): Promise<void> {
+    await api.delete(`/comments/${commentId}`);
+  },
+
+  async deleteChapterComment(bookId: string, chapterId: string, commentId: string): Promise<void> {
     await api.delete(`/books/${bookId}/chapters/${chapterId}/comments/${commentId}`);
   },
 
@@ -106,6 +144,19 @@ export const readerService = {
     } catch {
       return null;
     }
+  },
+
+  async updateProgress(
+    bookId: string,
+    chapterId: string,
+    progressPercentage: number
+  ): Promise<ReadingProgress> {
+    const data: ReadingProgressUpdate = { progress_percentage: progressPercentage };
+    const response = await api.post<ReadingProgress>(
+      `/books/${bookId}/chapters/${chapterId}/progress`,
+      data
+    );
+    return response.data;
   },
 
   async updateReadingProgress(
