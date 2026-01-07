@@ -20,7 +20,7 @@ export interface ChapterCreate {
   title: string;
   content_type: 'simple' | 'interactive';
   content_data: Record<string, any>;
-  chapter_number?: number;
+  chapter_number: number; // Required by backend
   is_published?: boolean;
 }
 

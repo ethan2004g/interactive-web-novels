@@ -75,7 +75,22 @@ function EditChapterContent() {
       router.push(`/dashboard/books/${bookId}/chapters`);
     } catch (err: any) {
       console.error('Error updating chapter:', err);
-      setError(err.response?.data?.detail || 'Failed to update chapter. Please try again.');
+      
+      // Handle FastAPI validation errors
+      if (err.response?.data?.detail) {
+        const detail = err.response.data.detail;
+        if (Array.isArray(detail)) {
+          // Format validation errors
+          const errors = detail.map((e: any) => `${e.loc.join('.')}: ${e.msg}`).join(', ');
+          setError(`Validation error: ${errors}`);
+        } else if (typeof detail === 'string') {
+          setError(detail);
+        } else {
+          setError('Failed to update chapter. Please check your input.');
+        }
+      } else {
+        setError('Failed to update chapter. Please try again.');
+      }
     } finally {
       setSaving(false);
     }

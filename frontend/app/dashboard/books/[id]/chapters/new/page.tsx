@@ -19,11 +19,13 @@ function CreateChapterContent() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [book, setBook] = useState<Book | null>(null);
+  const [existingChapters, setExistingChapters] = useState<number>(0);
   const [formData, setFormData] = useState<ChapterCreate>({
     title: '',
     content_type: 'simple',
     content_data: { text: '' },
     is_published: false,
+    chapter_number: 1,
   });
 
   useEffect(() => {
@@ -33,8 +35,19 @@ function CreateChapterContent() {
   const loadBook = async () => {
     try {
       setLoading(true);
-      const bookData = await bookService.getBookById(bookId);
+      const [bookData, chapters] = await Promise.all([
+        bookService.getBookById(bookId),
+        chapterService.getChaptersByBook(bookId),
+      ]);
       setBook(bookData);
+      setExistingChapters(chapters.length);
+      
+      // Set next chapter number
+      const nextChapterNumber = chapters.length + 1;
+      setFormData(prev => ({
+        ...prev,
+        chapter_number: nextChapterNumber,
+      }));
     } catch (err: any) {
       console.error('Error loading book:', err);
       setError('Failed to load book details');
@@ -63,7 +76,22 @@ function CreateChapterContent() {
       router.push(`/dashboard/books/${bookId}/chapters`);
     } catch (err: any) {
       console.error('Error creating chapter:', err);
-      setError(err.response?.data?.detail || 'Failed to create chapter. Please try again.');
+      
+      // Handle FastAPI validation errors
+      if (err.response?.data?.detail) {
+        const detail = err.response.data.detail;
+        if (Array.isArray(detail)) {
+          // Format validation errors
+          const errors = detail.map((e: any) => `${e.loc.join('.')}: ${e.msg}`).join(', ');
+          setError(`Validation error: ${errors}`);
+        } else if (typeof detail === 'string') {
+          setError(detail);
+        } else {
+          setError('Failed to create chapter. Please check your input.');
+        }
+      } else {
+        setError('Failed to create chapter. Please try again.');
+      }
     } finally {
       setSaving(false);
     }
