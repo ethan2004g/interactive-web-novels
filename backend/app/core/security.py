@@ -8,7 +8,13 @@ from passlib.context import CryptContext
 from app.core.config import settings
 
 # Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# bcrypt has a 72 byte limit, enable truncate_error=False to handle long passwords
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto",
+    bcrypt__rounds=12,
+    bcrypt__truncate_error=False
+)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -18,6 +24,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     """Hash a password"""
+    # bcrypt has a 72 byte limit, truncate if necessary
+    if len(password.encode('utf-8')) > 72:
+        password = password[:72]
     return pwd_context.hash(password)
 
 
@@ -29,6 +38,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     else:
         expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     
+    # Convert sub to string if it's an integer (JWT spec requires string)
+    if "sub" in to_encode and isinstance(to_encode["sub"], int):
+        to_encode["sub"] = str(to_encode["sub"])
+    
     to_encode.update({"exp": expire, "type": "access"})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
@@ -38,6 +51,11 @@ def create_refresh_token(data: dict) -> str:
     """Create a JWT refresh token"""
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    
+    # Convert sub to string if it's an integer (JWT spec requires string)
+    if "sub" in to_encode and isinstance(to_encode["sub"], int):
+        to_encode["sub"] = str(to_encode["sub"])
+    
     to_encode.update({"exp": expire, "type": "refresh"})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
