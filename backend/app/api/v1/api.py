@@ -2,17 +2,17 @@
 API v1 router aggregation
 """
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth, users
+from app.api.v1.endpoints import auth, users, books
 
 api_router = APIRouter()
 
 # Include endpoint routers
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(books.router, prefix="/books", tags=["books"])
 
 # Future routers:
-# from app.api.v1.endpoints import books, chapters
-# api_router.include_router(books.router, prefix="/books", tags=["books"])
+# from app.api.v1.endpoints import chapters
 # api_router.include_router(chapters.router, prefix="/chapters", tags=["chapters"])
 
 @api_router.get("/")

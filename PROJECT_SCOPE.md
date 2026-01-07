@@ -162,14 +162,14 @@ Authors can not only write chapters but also **code** them with:
   - [x] Set up PostgreSQL database
   - [x] Configure SQLAlchemy ORM
 
-- [ ] **1.2 User Authentication System**
-  - [ ] Create User model and database table
-  - [ ] Implement user registration endpoint
-  - [ ] Implement user login endpoint (JWT)
-  - [ ] Implement password hashing (bcrypt)
-  - [ ] Create authentication middleware
-  - [ ] Implement token refresh endpoint
-  - [ ] Create user profile endpoints (GET, PUT)
+- [x] **1.2 User Authentication System**
+  - [x] Create User model and database table
+  - [x] Implement user registration endpoint
+  - [x] Implement user login endpoint (JWT)
+  - [x] Implement password hashing (bcrypt)
+  - [x] Create authentication middleware
+  - [x] Implement token refresh endpoint
+  - [x] Create user profile endpoints (GET, PUT)
 
 - [ ] **1.3 Books Management API**
   - [ ] Create Book model and database table
@@ -373,20 +373,22 @@ Authors can not only write chapters but also **code** them with:
 ## 📝 Current Status
 
 **Current Phase:** Phase 1 - Backend Foundation  
-**Progress:** Phase 1.1 Complete (100%)
+**Progress:** Phase 1.1 & 1.2 Complete (100%)
 
 ### Recently Completed
-- ✅ Phase 1.1: Backend Project Setup
-  - ✅ Initialized FastAPI project structure
-  - ✅ Created requirements.txt with all dependencies
-  - ✅ Configured complete project structure (routers, models, schemas, services)
-  - ✅ Set up database configuration with SQLAlchemy
-  - ✅ Created environment configuration files
-  - ✅ Set up Alembic for database migrations
+- ✅ Phase 1.2: User Authentication System
+  - ✅ Created User model with roles (reader/author/admin)
+  - ✅ Implemented JWT-based authentication
+  - ✅ User registration with validation
+  - ✅ Login with username/email support
+  - ✅ Token refresh mechanism
+  - ✅ Password hashing with bcrypt
+  - ✅ User profile management (GET, PUT)
+  - ✅ Role-based access control dependencies
+  - ✅ All authentication tests passing
 
 ### Next Up
-- Phase 1.2: User Authentication System
-- Install PostgreSQL locally and create database
+- Phase 1.3: Books Management API
 
 ---
 

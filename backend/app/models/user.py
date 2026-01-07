@@ -26,8 +26,8 @@ class User(Base):
     profile_picture_url = Column(String(500), nullable=True)
     bio = Column(String(1000), nullable=True)
     
-    # Relationships will be added as we create other models
-    # books = relationship("Book", back_populates="author")
+    # Relationships
+    books = relationship("Book", back_populates="author")
     # reading_progress = relationship("ReadingProgress", back_populates="user")
     # comments = relationship("Comment", back_populates="user")
     # bookmarks = relationship("Bookmark", back_populates="user")
